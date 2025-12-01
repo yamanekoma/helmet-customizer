@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ヘルメットカスタマイズプレビュー</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro', 'Yu Gothic', '游ゴシック', 'Meiryo', 'メイリオ', sans-serif;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.preview-section {
+    flex: 1;
+    min-width: 300px;
+    padding: 40px;
+    background: #ecf0f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-container {
+    position: relative;
+    width: 500px;
+    height: 500px;
+}
+
+.preview-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.helmet-base {
+    z-index: 1;
+}
+
+.pattern-layer {
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.pattern-layer.active {
+    opacity: 1;
+}
+
+.text-layer {
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.text-layer.active {
+    opacity: 1;
+}
+
+.controls-section {
+    flex: 1;
+    min-width: 300px;
+    padding: 40px;
+}
+
+.control-group {
+    margin-bottom: 30px;
+}
+
+.control-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: 2px solid #bdc3c7;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.btn:hover {
+    border-color: #34495e;
+    background: #ecf0f1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+}
+
+.btn.active {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    border-color: #2c3e50;
+}
+
+.color-group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.color-btn {
+    width: 60px;
+    height: 60px;
+    border: 3px solid #bdc3c7;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.color-btn.active {
+    border-color: #2c3e50;
+    border-width: 4px;
+}
+
+.color-btn.active::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 768​​​​​​​​​​​​​​​​
+
+.select-box {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    background: white;
+    font-size: 16px;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.select-box:hover {
+    border-color: #34495e;
+}
+
+.select-box:focus {
+    outline: none;
+    border-color: #2c3e50;
+    box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ヘルメットカスタマイズプレビュー</h1>
+            <p>お好みの模様・文字・色を選択してください</p>
+        </div>
+        
+        <div class="content">
+            <div class="preview-section">
+                <div class="preview-container">
+                    <img src="he_y.png" alt="ヘルメット" class="helmet-base">
+                    
+                    <img src="moyou1.png" alt="模様1" class="pattern-layer" id="pattern1" style="filter: hue-rotate(0deg) saturate(100%);">
+                    <img src="moyou2.png" alt="模様2" class="pattern-layer" id="pattern2" style="filter: hue-rotate(0deg) saturate(100%);">
+                    <img src="moyou3.png" alt="模様3" class="pattern-layer" id="pattern3" style="filter: hue-rotate(0deg) saturate(100%);">
+                    
+                    <img src="anzen_mi.png" alt="安全第一（明朝）" class="text-layer" id="text-anzen-mi" style="filter: hue-rotate(0deg) saturate(100%);">
+                    <img src="anzen_go.png" alt="安全第一（ゴシック）" class="text-layer" id="text-anzen-go" style="filter: hue-rotate(0deg) saturate(100%);">
+                    <img src="kabu_mi.png" alt="株式会社ライフ（明朝）" class="text-layer" id="text-kabu-mi" style="filter: hue-rotate(0deg) saturate(100%);">
+                    <img src="kabu_go.png" alt="株式会社ライフ（ゴシック）" class="text-layer" id="text-kabu-go" style="filter: hue-rotate(0deg) saturate(100%);">
+                </div>
+            </div>
+            
+<div class="controls-section">
+    <div class="control-group">
+        <label>模様を選択</label>
+        <div class="button-group">
+            <button class="btn" onclick="selectPattern('none')">模様なし</button>
+            <button class="btn" onclick="selectPattern('pattern1')">曲線</button>
+            <button class="btn" onclick="selectPattern('pattern2')">斜線</button>
+            <button class="btn" onclick="selectPattern('pattern3')">ブラシ</button>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label>文字を選択</label>
+        <div class="button-group">
+            <button class="btn" onclick="selectText('none')">文字なし</button>
+            <button class="btn" onclick="selectText('anzen')">安全第一</button>
+            <button class="btn" onclick="selectText('kabu')">株式会社ライフ</button>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label>フォントを選択</label>
+        <div class="button-group">
+            <button class="btn" onclick="selectFont('mi')">明朝体</button>
+            <button class="btn" onclick="selectFont('go')">ゴシック体</button>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label>色を選択</label>
+        <div class="color-group">
+            <button class="color-btn" style="background: #dc143c;" onclick="selectColor('#dc143c')" title="赤"></button>
+            <button class="color-btn" style="background: #0000aa;" onclick="selectColor('#0000aa')" title="青"></button>
+            <button class="color-btn" style="background: #228b22;" onclick="selectColor('#228b22')" title="緑"></button>
+            <button class="color-btn" style="background: #ffd700;" onclick="selectColor('#ffd700')" title="黄色"></button>
+            <button class="color-btn" style="background: #ff8c00;" onclick="selectColor('#ff8c00')" title="オレンジ"></button>
+            <button class="color-btn" style="background: #993399;" onclick="selectColor('#993399')" title="紫"></button>
+            <button class="color-btn" style="background: #db7093;" onclick="selectColor('#db7093')" title="ピンク"></button>
+            <button class="color-btn" style="background: #000000;" onclick="selectColor('#000000')" title="黒"></button>
+        </div>
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+    </div>
+    
+    <script>
+
+let currentPattern = 'none';
+let currentText = 'none';
+let currentFont = 'mi';
+let currentColor = '#000000';
+
+// 色の定義
+const colors = {
+    '#dc143c': { name: '赤', filter: 'invert(21%) sepia(98%) saturate(4786%) hue-rotate(343deg) brightness(91%) contrast(92%)' },
+    '#0000aa': { name: '青', filter: 'invert(11%) sepia(100%) saturate(6526%) hue-rotate(245deg) brightness(78%) contrast(143%)' },
+    '#228b22': { name: '緑', filter: 'invert(42%) sepia(93%) saturate(642%) hue-rotate(77deg) brightness(91%) contrast(88%)' },
+    '#ffd700': { name: '黄色', filter: 'invert(77%) sepia(85%) saturate(509%) hue-rotate(359deg) brightness(104%) contrast(104%)' },
+    '#ff8c00': { name: 'オレンジ', filter: 'invert(62%) sepia(74%) saturate(5679%) hue-rotate(1deg) brightness(103%) contrast(106%)' },
+    '#993399': { name: '紫', filter: 'invert(28%) sepia(53%) saturate(1545%) hue-rotate(269deg) brightness(85%) contrast(91%)' },
+    '#db7093': { name: 'ピンク', filter: 'invert(58%) sepia(28%) saturate(1131%) hue-rotate(299deg) brightness(91%) contrast(88%)' },
+    '#000000': { name: '黒', filter: 'brightness(0)' }
+};
+
+
+function selectPattern(pattern) {
+    currentPattern = pattern;
+    updatePreview();
+    updateActiveButton('pattern', pattern);
+}
+
+function selectText(text) {
+    currentText = text;
+    updatePreview();
+    updateActiveButton('text', text);
+}
+
+function selectFont(font) {
+    currentFont = font;
+    updatePreview();
+    updateActiveButton('font', font);
+}
+
+function selectColor(color) {
+    currentColor = color;
+    updatePreview();
+    updateActiveColorButton(color);
+}
+
+function updatePreview() {
+    // 模様の表示
+    document.querySelectorAll('.pattern-layer').forEach(layer => {
+        layer.classList.remove('active');
+    });
+    
+    if (currentPattern !== 'none') {
+        const patternLayer = document.getElementById(currentPattern);
+        if (patternLayer) {
+            patternLayer.classList.add('active');
+            patternLayer.style.filter = colors[currentColor].filter;
+        }
+    }
+    
+    // 文字の表示
+    document.querySelectorAll('.text-layer').forEach(layer => {
+        layer.classList.remove('active');
+    });
+    
+    if (currentText !== 'none') {
+        const textId = `text-${currentText}-${currentFont}`;
+        const textLayer = document.getElementById(textId);
+        if (textLayer) {
+            textLayer.classList.add('active');
+            textLayer.style.filter = colors[currentColor].filter;
+        }
+    }
+}
+
+function updateActiveButton(type, value) {
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(btn => {
+        const onclick = btn.getAttribute('onclick');
+        if (onclick && onclick.includes(`select${type.charAt(0).toUpperCase() + type.slice(1)}('${value}')`)) {
+            btn.classList.add('active');
+        } else if (onclick && onclick.includes(`select${type.charAt(0).toUpperCase() + type.slice(1)}`)) {
+            btn.classList.remove('active');
+        }
+    });
+}
+
+function updateActiveColorButton(color) {
+    document.querySelectorAll('.color-btn').forEach(btn => {
+        btn.classList.remove('active');
+        const bgColor = btn.style.background;
+        if (bgColor === color || bgColor === `rgb(${hexToRgb(color)})`) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? 
+        `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : null;
+}
+
+// 初期状態の設定
+selectColor('#000000');
+
+    </script>
+</body>
+</html>
